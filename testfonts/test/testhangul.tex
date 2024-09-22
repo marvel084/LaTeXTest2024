@@ -1,0 +1,206 @@
+\documentclass{article}
+\usepackage{zhlipsum}
+\usepackage{xparse}  % 用于定义新的命令
+\usepackage{expl3}  % LaTeX3 编程接口
+\usepackage{iftex}
+
+% ---------------------------------------------------------------------------- %
+%                                  polyglossia                                 %
+% ---------------------------------------------------------------------------- %
+\usepackage{polyglossia} %放在ctex前，使古谚文能被拼合
+\setmainlanguage{english}
+\setotherlanguage{korean}
+% polyglossia参数控制图标题注
+\gappto\captionsenglish{\def\tablename{表}}
+% caption宏包控制图标题注
+% \usepackage{caption}
+% \captionsetup[figure]{name=图}
+% \captionsetup[table]{name=表}
+% \renewcommand\tablename{表} % polyglossia下没用
+
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+\usepackage[fontset=none]{ctex}
+
+% \usepackage{xeCJK}
+% \usepackage{luatexja}
+% \usepackage{luatexko}
+% \usepackage{luatexja-fontspec}
+
+% ------------------------------ 1. XeTeX用CJK字体 ------------------------------ %
+\ifXeTeX
+\newCJKfontfamily\oldjamo{Noto Serif CJK KR}[Script=Hangul] %旧谚文
+% XeTeX会清空所有空格，所以韩语段的空格无效
+\fi
+% ------------------------- 2. LuaTeX用CJK字体配luatexko ------------------------- %
+\iffalse 
+%% 方案2
+\ifLuaTeX
+\ctexset
+{
+    declarecharrange =
+        {
+            {jamo} {"1100->"11FF,"3130->"318F,"A960->"A97F,"D7B0->"D7FF}
+        }
+}
+
+\setCJKmainfont{Noto Serif CJK SC}[ 
+    AlternateFont={
+        {jamo} {Noto Serif CJK KR} {Script=Hangul},
+    }
+]
+
+\newCJKfontfamily\oldjamo{Noto Serif CJK KR}[Script=Hangul]%
+% 也可注释掉上句的AlternateFont，使用下句
+% \setCJKmainfont{Noto Serif CJK KR}[CharRange={jamo},Script=Hangul]
+
+\usepackage[hangul]{luatexko}
+% \hangulpunctuations=-1
+% \unregisterpunctuations{"2C,"FF0C}
+\fi
+\fi
+% ------------------------- 3. LuaTeX西文字体配polyglossia ------------------------ %
+\ifLuaTeX
+\ltjdefcharrange{3}{
+  "1100-"11FF , "3130-"318F,"A960-"A97F,"D7B0-"D7FF,"302E-"302F
+}
+\ltjdefcharrange{3}{
+  "AC00-"D7AF % 现代韩语音节
+}
+\newfontfamily\oldjamo{Noto Serif CJK KR}[Script=Hangul]%
+\fi
+% ---------------------------------------------------------------------------- %
+
+\setmainfont{texgyretermes}[ %仿TimesNewRoman字体
+  Extension      = .otf,
+  UprightFont    = *-regular,
+  BoldFont       = *-bold,
+  ItalicFont     = *-italic,
+  BoldItalicFont = *-bolditalic,
+]%
+% \setmainfont{TH-Times}
+% \setmainfont{TH-Tshyn-P0}
+
+\newfontfamily\hangulfont{Noto Serif CJK KR}[Script=Hangul]%
+% \newjfontfamily\oldjamo{Noto Serif CJK KR}[Script=Hangul]%luatexja-fontspec字体
+
+\newCJKfontfamily\oldCJKjamo{Noto Serif CJK KR}[Script=Hangul]%
+\setCJKmainfont{Noto Serif CJK SC}
+% \setCJKmainfont{Noto Serif CJK KR}[Script=Hangul]
+
+\usepackage[pmfont={Noto Serif CJK KR}]{pmhanguljamo}
+
+% \listfiles
+
+\usepackage[paperwidth=210mm,paperheight=290mm,left=25mm,right=25mm,top=25mm, bottom=20mm,showcrop]{geometry}
+
+\begin{document}
+
+\title{测试 \LaTeX 谚文显示}
+\author{moonhikari}
+\date{2024/9/1}
+\maketitle
+
+全 滑 文。中国智造，慧及全球
+
+\begin{table}[htbp]
+    % \renewcommand{\tablename}{表表}
+    \caption{Test Phagspa positional variants}
+    \centering
+    \begin{tabular}{r|cccc}
+        \hline
+         & Isolate & Initial & Medial & Final\\
+         \hline
+        mainfont & 123 & 123 & 123 & 123\\
+        \hline
+    \end{tabular}
+    
+    \label{tab:my_label}
+  \end{table}
+
+\zhlipsum[1]
+
+\subsection*{古谚文·初中终编码}
+
+% 正文测试部分 下略
+{
+\oldjamo
+F28 ᅎᆑ	ᅎᆑᆫ	ᅎᅳ	ᅎᅳᆫ	ᅎᅳᆺ	ᅎᅳᇫ	ᅎᅵ	ᅎᅵᆫ	ᅎᅵᆷ	ᅎᅵᇢ	ᅎᅵᇫ	ᅏᅡ	ᅏᅡᆫ	ᅏᅡᆷ	ᅏᅡᇢ	ᅏᅡᇰ \par
+F29	ᅏᅢ	ᅏᅣ	ᅏᅣᆷ	ᅏᅣᇰ	ᅏᅥ	ᅏᅥᆫ	ᅏᅧ	ᅏᅧᆫ	ᅏᅨ	ᅏᅮ	ᅏᅱ	ᅏᅲ	ᅏᅲᇰ	ᅏᆑ	ᅏᆑᆫ	ᅏᅳ \par
+F2A	ᅏᅳᇫ	ᅏᅳᇰ	ᅏᅵ	ᅏᅵᆫ	ᅏᆞ	ᅏᆡ	ᅐᅡ	ᅐᅡᆫ	ᅐᅡᆮ	ᅐᅡᆷ	ᅐᅡᇢ	ᅐᅡᆸ	ᅐᅢ	ᅐᅣ	ᅐᅣᆷ	ᅐᅣᇢ \par
+F2B	ᅐᅣᇰ	ᅐᅧ	ᅐᅧᆫ	ᅐᅩ	ᅐᅪ	ᅐᅪᆼ	ᅐᅮ	ᅐᅮᆼ	ᅐᅮᇹ	ᅐᅲ	ᅐᅲᆨ	ᅐᅲᆫ	ᅐᅲᇰ	ᅐᆑ	ᅐᆑᆫ	ᅐᅳ \par
+F2C	ᅐᅳᆷ	ᅐᅳᇫ	ᅐᅵ	ᅐᅵᆫ	ᅐᅵᇫ	ᅐᅵᇰ	ᅑᅡ	ᅑᅡᆫ	ᅑᅡᇂ	ᅑᅢ	ᅑᅣ	ᅑᅣᆷ	ᅑᅣᇢ	ᅑᅣᆸ	ᅑᅣᇰ	ᅑᅧ \par
+F2D	ᅑᅧᆫ	ᅑᅮ	ᅑᅱ	ᅑᅲ	ᅑᅲᇰ	ᅑᆑ	ᅑᆑᆫ	ᅑᅳ	ᅑᅳᆷ	ᅑᅳᇢ	ᅑᅵ	ᅑᅵᆫ	ᅑᅵᆷ	ᅑᅵᇫ	ᅑᅵᇰ	차ᇙ \par
+F2E	차ᇢ  차ᇦ	차ᇰ	차ᇹ	ᄎᅶ	챠ᇙ	챠ᇦ	챠ᇰ	챠ᇱ	ᄎᅸ	ᄎᅸᆯ	ᄎᆤ	처ᇫ	처ᇰ	ᄎᅼ	ᄎᅼᆫ \par
+F2F	쳐ퟍ	쳐ퟎ	쳐ퟏ	쳐ᇙ	쳐ᇢ	쳐ᇰ	쳐ᇱ	쳐ᇹ	ᄎᅽ	ᄎᅾ	초ᇙ	초ᇢ	초ퟨ	초ᇫ	초ᇰ	촤ᇙ \par
+F30	촤ᇰ	ᄎᆂ	쵸ᇢ	쵸ᇰ	ᄎᆇ	ᄎᆈ	ᄎᆈᆫ	추ᇙ	추ᇠ	추ᇢ	추ᇰ	추ᇹ	ᄎᆉ	ᄎᆉᆫ	ᄎᆉᆼ	ᄎᆊ \par
+F31	춰ᇹ	ᄎힵ	ᄎᆌ	취ᇙ	취ᇹ	츄ᇙ	츄ᇢ	츄ᇰ	츄ᇹ	ᄎᆎ	ᄎᆎᆫ	ᄎᆏ	ᄎᆏᆷ	ᄎᆐ	ᄎᆑ	ᄎᆑᆫ \par
+F32	ᄎᆑᆯ	ᄎᆑᇙ	ᄎᆑᆷ	ᄎᆒ	ᄎᆒᆼ	ᄎᆔ	ᄎᆔᆫ	ᄎᆔᆯ	ᄎᆔᆼ	츠ퟛ	츠ᇙ	츠ퟝ	츠ᇢ	츠ᇫ	츠ᇰ	ᄎᆕ 
+}
+    
+ᅎᆑ % 古谚文 初中终编码
+
+십년 % 有独立码位的现代韩语音节
+
+중국 % 现代韩语音节，初中终编码
+
+\newpage
+
+\subsection*{汉谚混写、声调傍点}
+
+\begin{korean}
+    {
+    % \oldCJKjamo
+    \oldjamo
+    國 귁〮 之 징 語 ᅌᅥᆼ〯 音 ᅙᅳᆷ이〮
+    
+    異 잉〮乎 ᅘᅩᆼ 中 듀ᇰ 國 귁〮ᄒᆞ〮야〮
+    
+    與영〯 文 문 字ᄍᆞᆼ〮로〮 不 부ᇙ〮  相 샤ᇰ 流 류ᇢ 通 토ᇰᄒᆞᆯᄊᆡ〮
+    
+    故공〮로〮愚ᅌᅮᆼ民민이〮有우ᇢ〯所송〯欲욕〮言ᅌᅥᆫᄒᆞ〮야도〮
+    
+    而ᅀᅵᆼ終쥬ᇰ不부ᇙ〮得득〮伸신其끵情쪄ᇰ者쟝〯ㅣ多당矣ᅌᅴᆼ〯라〮
+    
+    予영ㅣ爲윙〮此ᄎᆞᆼ〯憫민〯然ᅀᅧᆫᄒᆞ〮야〮
+    
+    新신制졩〮二ᅀᅵᆼ〮十씹〮八바ᇙ〮字ᄍᆞᆼ〮ᄒᆞ〮노니〮
+    
+    欲욕〮使ᄉᆞᆼ〯人ᅀᅵᆫ人ᅀᅵᆫᄋᆞ〮로〮
+    
+    易잉〮習씹〮ᄒᆞ〮야〮便뼌於ᅙᅥᆼ日ᅀᅵᇙ〮用요ᇰ〮耳ᅀᅵᆼ〯니라〮
+    }
+\end{korean}
+
+\subsection*{pmhanguljamo包}
+
+\subsubsection*{《洪武正韻譯訓》字母：}
+
+\begin{korean}
+  \begin{jamotext}
+    幫baf/ 滂paf/ 並bbif/ 明mif/ \par
+    非bqi/ (敷)  奉bbqvf/ 微mqi/ \par
+    端duen/ 透tvmq/ 定ddif/ 泥ni/ \par
+    精jlif/ 清clif/ 從jjluf/ 心slim/ 邪sslye/ \par
+    照jlryamq/ 穿clryuyen/ 牀jjlroaf/ 審slrim/ 禪sslryen/ \par
+    見gyen/ 溪ki/ 羣ggyun/ 疑fi/ \par
+    影xif/ 曉hyamq/ 匣hhyax/ 喻qyu/ \par
+    來rai/ 日zix/ \par
+    wyuye/ wyuyen/
+  \end{jamotext}
+\end{korean}
+
+\subsubsection*{《訓民正音》世宗原诏：}
+
+\begin{korean}
+% \oldCJKjamo
+ \begin{jamotext}
+    na/ras;mar:ss@/mi;
+    中dyuf/國guig;ei; dar/a;
+    文mun/字jj@q;oa;ro; se/rv/ s@/m@s/di; a/ni;h@r/ss@i;
+    i;ren jyen/c@;ro; e/rin; 百b@ig;姓syef;i;
+    ni/rv/go;jye; horx; bai; i/sye;do;
+    m@/c@m;nai: jei bdv;dvr; si/re; pye/di; mod:h@rx no;mi; ha/ni;ra
+  \end{jamotext}
+\end{korean}
+\end{document}

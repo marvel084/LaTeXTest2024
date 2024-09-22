@@ -1,0 +1,330 @@
+% !Mode:: "TeX:UTF-8"
+% !TEX root = main.tex
+% !TeX spellcheck = en_US
+
+\documentclass{article}
+% \documentclass[fontset=none]{ctexart}
+
+\usepackage{seqsplit}
+\usepackage{xparse}  % 用于定义新的命令
+\usepackage{expl3}  % LaTeX3 编程接口
+\usepackage{iftex}
+\usepackage[T1]{fontenc}
+
+% ---------------------------------------------------------------------------- %
+%                                  polyglossia                                 %
+% ---------------------------------------------------------------------------- %
+\ifLuaTeX
+% LuaTeX使用TH-Times字体必须开启polyglossia；XeTeX+CTeX使用pmhanguljamo需开启polyglossia
+\usepackage{polyglossia}
+\setmainlanguage{english}
+% \newfontfamily\cjkfont{Noto Sans CJK SC}
+\setotherlanguage{korean}
+% \setotherlanguage{marshallese}
+% \setotherlanguage{phagspa}
+% ---------------------------- polyglossia参数控制图标题注 --------------------------- %
+\gappto\captionsenglish{\def\tablename{表}}
+\gappto\captionsenglish{\def\figurename{图}}
+\gappto\captionsenglish{\def\contentsname{目~~录}}
+\gappto\captionsenglish{\def\listfigurename{图~~片}}
+\gappto\captionsenglish{\def\listtablename{表~~格}}
+\fi
+
+\usepackage{fontspec}
+\usepackage{xunicode-addon}
+\usepackage[UTF8,zihao=-4]{ctex}
+\ctexset{
+  figurename = 图,
+  tablename  = 表,
+  contentsname = {目~~录}
+}%
+\let\kaiti=\kaishu
+% \ctexset{
+%     fontset=windows
+% }
+
+% ------------------------------ caption宏包控制图标题注 ----------------------------- %
+% \usepackage{caption}
+% \captionsetup[figure]{name=图}
+% \captionsetup[table]{name=表}
+\renewcommand{\thetable}{\thesection-\arabic{table}}
+\renewcommand{\thefigure}{\thesection-\arabic{figure}}
+
+
+% ---------------------------------- 标题格式设置 ---------------------------------- %
+\usepackage{titleref}
+\usepackage{titlesec}
+%\titlespacing*{hcommandi}{hlefti}{hbefore-sepi}{hafter-sepi}[hright-sepi]
+\titlespacing*{\section}{0pt}{\baselineskip}{0.5\baselineskip}
+\titlespacing*{\subsection}{0pt}{0.5\baselineskip}{0.5\baselineskip}
+\titlespacing*{\subsubsection}{0pt}{0.5\baselineskip}{0pt}
+\titlespacing{\paragraph}{2em}{0.5\baselineskip}{1em}
+% 这里利用titleformat*简单做设置，也可以利用titleformat做详细设置
+% \titleformat*{\section}{\zihao{-3}\bfseries\heiti}
+% \titleformat*{\subsection}{\zihao{4}\bfseries\heiti}
+\titleformat*{\subsubsection}{\zihao{-4}\bfseries\kaiti}
+% \renewcommand{\contentsname}{\zihao{4}目~~录}
+
+
+
+\usepackage{xurl}
+\usepackage{listings}
+\usepackage{makecell}
+
+
+% ---------------------------------------------------------------------------- %
+%                                     西文字体                                  %
+% ---------------------------------------------------------------------------- %
+% 天珩字库 TH-Times TrueType TTC http://cheonhyeong.com/Tools/Times.html st ct Qu 2nd 等默认皆连字
+% \setmainfont{TH-Times}[AutoFakeBold]
+\setmainfont{texgyrepagella}[
+% \setmainfont{texgyretermes}[      %仿TimesNewRoman字体
+  Extension      = .otf,
+  UprightFont    = *-regular,
+  BoldFont       = *-bold,
+  ItalicFont     = *-italic,
+  BoldItalicFont = *-bolditalic,
+  Ligatures      = TeX,
+]%
+\setsansfont{texgyreheros}[
+  Extension      = .otf,
+  UprightFont    = *-regular,
+  BoldFont       = *-bold,
+  ItalicFont     = *-italic,
+  BoldItalicFont = *-bolditalic,
+]%
+% \setmonofont{texgyrecursor}[
+%   Extension      = .otf,
+%   UprightFont    = *-regular,
+%   BoldFont       = *-bold,
+%   ItalicFont     = *-italic,
+%   BoldItalicFont = *-bolditalic,
+%   Scale          = MatchLowercase,
+%   Ligatures      = CommonOff,
+% ]%
+
+%手动fallback用TH-Times
+\newfontfamily\fb{TH-Times}
+\newfontfamily\fbtk{TH-Times}[Language=Turkish]
+\newfontfamily\fbcn{TH-Times}[Language={Chinese Simplified}]
+\newfontfamily\fbtw{TH-Times}[Language={Chinese Traditional}]
+\newfontfamily\fbjp{TH-Times}[Language={Japanese}]
+\newCJKfontfamily\cjkcn{Noto Serif CJK SC}[Language={Chinese Simplified}]
+\newCJKfontfamily\cjktw{Noto Serif CJK TC}[Language={Chinese Traditional}]
+\newCJKfontfamily\fbpunctw{TH-Times}[Language={Chinese Traditional}] % for demo
+\newfontfamily\hangulfont{Noto Serif CJK KR}[Script=Hangul]%
+% \newfontfamily\phagspafont{TH-Times}[Script=Phags-pa]%
+\newfontfamily\mongolianfont{TH-Times}[Script=Mongolian]%
+% \newfontfamily\marshallesefont{TH-Times}% for demo
+% ----------------------------------- 八思巴文 ----------------------------------- %
+% 处理连字（IUEO的位置变体）需换用字体支持Script=Phags-pa
+% \newfontfamily\psp{Noto Sans PhagsPa}[Script=Phags-pa] %Linux下NotoSansPhagsPa
+% \newfontfamily\psp{Microsoft PhagsPa}[Script=Phags-pa] %Windows下Microsoft PhagsPa
+\newfontfamily\psp{TH-Times}[Script=Phags-pa] %TH-Times修正了NotoSansPhagsPa的错误
+
+%----------------------------------------------------------------------------------
+%%CJK配置
+\ifXeTeX
+\xeCJKDeclareCharClass{CJK}{%带圈数字划给CJK
+  "24EA,        % ⓪
+  "2460->"2473, % ①->⑳
+  "3251->"32BF, % ㉑->㊿
+  "24FF,        % ⓿
+  "2776->"277F, % ❶->❿
+  "24EB->"24F4  % ⓫->⓴
+}
+
+%定义CJK字体分区
+\xeCJKDeclareSubCJKBlock{P0-CJKpart}{"2FF0->"2FFF, "3100->"312F, "31A0->"31BF, "31C0->"31EF} %第0平面部分CJK
+% \xeCJKDeclareSubCJKBlock{CJKExtA}{"3400-> "4DBF} %CJK扩展A （思源宋体全收录）
+% \xeCJKDeclareSubCJKBlock{CJKUnified}{"4E00 -> "9FFF} %CJK统一（思源宋体全收录）
+% \xeCJKDeclareSubCJKBlock{CJKCompat}{"F900-> "FAFF} %CJK兼容（思源宋体收录不全）
+\xeCJKDeclareSubCJKBlock{CJKCompat-Source}{"FA6E-> "FAFF} %CJK兼容，思源宋体不支持的部分
+% \xeCJKDeclareSubCJKBlock{SPUA}{ "E400 -> "E4DA , "E500 -> "E5E8 , "E600 -> "E6CE } %私用区
+\xeCJKDeclareSubCJKBlock{P2}{ "20000 -> "2EE5F } %第2平面汉字（CJK扩展BCDEFI）
+\xeCJKDeclareSubCJKBlock{P3}{ "30000 -> "323AF } %第3平面汉字（CJK扩展GH）
+% \xeCJKDeclareSubCJKBlock{P16}{ "100000 -> "10FFFF } %第16平面汉字（补充私用区B）
+% \xeCJKDeclareSubCJKBlock{Jamo}{ "1100->"11FF, "3130->"318F, "A960->"A97F, "D7B0->"D7FF} %谚文字母
+
+\xeCJKsetup{
+    AutoFallBack
+}
+\newCJKfontfamily\oldjamo{Noto Serif CJK KR}[Script=Hangul] %旧谚文
+
+%设置中文字体
+\setCJKmainfont[
+    CJKCompat-Source=TH-Tshyn-P0,  % 思源宋体CJK兼容区缺失的，
+    P0-CJKpart=TH-Tshyn-P0,            % 0平面部分字，
+    P2=TH-Tshyn-P2,                % 2平面，
+    P3=TH-Tshyn-P1,                % 3平面字交给 天珩字库 http://cheonhyeong.com/Simplified/download.html
+    BoldFont={Noto Sans CJK SC},
+    ItalicFont={AR PL KaitiM GB}, % TeX楷体
+    % ]{Source Han Serif SC} %思源宋体
+    ]{Noto Serif CJK SC} %Noto CJK，缺字，扩展A不全、统一区不全
+
+\setCJKfallbackfamilyfont{\CJKrmdefault} %CJKfallback字体列
+    { 
+      % {[Jamo,Script=Hangul]{Noto Serif CJK KR}},
+      {TH-Times},{TH-Tshyn-P0},{TH-Tshyn-P2},{TH-Tshyn-P1}}
+
+% \setCJKmonofont{Noto Sans CJK SC}
+
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+\xeCJKOffVerbAddon
+\fi
+
+\ifLuaTeX
+%-----------------------------------------------------------------------------------
+% 给圈码数字分区，糅合THUThesis与https://www.cnblogs.com/coderzjz/p/15821966.html
+% ctex 将带圈数字 U+2460–U+24FF 归入字符范围 3（ALchar），这里改回范围 6（JAchar）
+\ltjdefcharrange{6}{%
+%带圈字母数字,CJK汉字部首补充,【修改】CJK符号和标点,汉文训读符号,片假名语音扩展
+"2460-"24FF, "2E80-"2EFF, "3000-"303F, "3190-"319F, "31F0-"4DBF,
+%CJK统一,CJK兼容,竖排形式,CJK兼容形式(竖排标点)，半角及全角字符
+"4E00-"9FFF, "F900-"FAFF, "FE10-"FE1F, "FE30-"FE6F, "FF00-"FFEF,
+%假名补充 假名扩展A 小型假名扩展,带圈字母数字补充 带圈表意文字补充,CJK二三平面,变体选择符补充
+"1B000-"1B16F, "1F100-"1F2FF, "20000-"3FFFF, "E0100-"E01EF,
+%【新增】圈1-10反白,CJK扩展A,注音符号,注音扩展
+"2776-"277F, "3400-"4DBF, "3100-"312F, "31A0-"31BF,"1100-"11FF,"3130-"318F,"A960-"A97F}
+% ------------------------------------ 谚文 ------------------------------------ %
+\ltjdefcharrange{3}{
+  "1100-"11FF,"3130-"318F,"A960-"A97F,"D7B0-"D7FF,"302E-"302F %谚文声调附点 302E 302F
+}
+\ltjdefcharrange{3}{
+  "AC00-"D7AF % 现代韩语音节,开启后ctex+polyglossia可谚文傍点，但正文CJK字体无法显示韩语
+}
+%-----------------------------------------------------------------------------------
+\ctexset
+{
+    declarecharrange =
+        {
+            {P0-CJKpart} {"2FF0 -> "2FFF , "3100 -> "312F , "31A0 -> "31BF , "31C0 -> "31EF} , %P0的部分CJK
+            {CJKCompat-Source} {"FA6E-> "FAFF}, %CJK兼容 思源宋体不支持的部分
+            {P2} { "20000 -> "2EE5F } , %第2平面汉字
+            {P3} { "30000 -> "323AF } , %第3平面汉字
+            % {jamo} {"1100->"11FF,"3130->"318F,"A960->"A97F,"D7B0->"D7FF} , %谚文字母 谚文兼容字母 扩展A 扩展B
+        }
+}
+\newfontfamily\oldjamo{Noto Serif CJK KR}[Script=Hangul]
+% \newCJKfontfamily\oldCJKjamo{Noto Serif CJK KR}[Script=Hangul]
+
+
+%设置中文字体
+% \setCJKmainfont{Noto Serif CJK SC}
+\setCJKmainfont{Source Han Serif SC} %用下载的思源宋体，而非debian源里的思源宋体，支持的字更多
+[
+    BoldFont={Noto Sans CJK SC},
+    % ItalicFont={KaiTi},
+    ItalicFont={AR PL KaitiM GB}, % TeX楷体
+    Script=CJK,                
+    AlternateFont={
+        % {jamo} {Noto Serif CJK KR} {Script=Hangul},
+        {P0-CJKpart,CJKCompat-Source} {TH-Tshyn-P0}, 
+        {P2} {TH-Tshyn-P2}, 
+        {P3} {TH-Tshyn-P1}, % 天珩字库 http://cheonhyeong.com/Simplified/download.html
+    }
+] %思源宋体
+% \setCJKmainfont[CharRange={jamo},Script=Hangul]{Noto Serif CJK KR}
+% \usepackage[hangul]{luatexko} %LuaTeX下利用luatexko宏包正确显示谚文（要放在ctex之后，否则会冲突，无必要先别开。会有代价吗？已知行距会增大。）
+\fi
+
+% ----------------------------- 重定义\songti \heiti ---------------------------- %
+\setCJKfamilyfont{zhsong}{Source Han Serif SC}
+[
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Regular,
+    BoldItalicFont = *-Bold
+]
+\setCJKfamilyfont{zhhei}{Noto Sans CJK SC}
+[
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Regular,
+    BoldItalicFont = *-Bold
+]
+% ---------------------------------------------------------------------------- %
+
+\usepackage[pmfont={Noto Serif CJK KR}]{pmhanguljamo}
+
+%------------------------------------------------------------------------------------
+%% 带圈数字 https://stone-zeng.site/2019-02-09-circled-numbers
+% 【注意！】：fontspec,xunicode-addon要置于ctex之前
+% XeLaTeX 下需要把全体带圈数字都设置成 Default 类（上方有CJK了，不需要）
+% \xeCJKDeclareCharClass{Default}{"24EA, "2460->"2473, "3251->"32BF}
+% 将中文字体声明为（西文）字体族（我这思源宋缩放时会有字重问题，TH-Times会好些）
+% \newfontfamily\EnclosedNumbers{TH-Times} %天珩字库
+\newfontfamily\EnclosedNumbers{Noto Serif CJK SC}
+% 放置钩子，只让带圈字符才需更换字体
+\AtBeginUTFCommand[\textcircled]{\begingroup\EnclosedNumbers}
+\AtEndUTFCommand[\textcircled]{\endgroup}
+%-------------------------------------------------------------------------------------
+
+
+% ------------------------------------ 删除线 ----------------------------------- %
+\ifLuaTeX
+  \usepackage{luacolor}
+  \usepackage[soul]{lua-ul} %eisvogel模板所采用，配合markdown删除线
+  \newcommand*{\sout}[1]{\st{#1}}
+  % \usepackage{soul}
+  % \usepackage{ulem} %不支持中文
+\fi
+\ifXeTeX
+  \usepackage{xeCJKfntef}
+  % \renewcommand{\st}[1]{\sout{#1}}
+\fi
+
+
+\usepackage[paperwidth=210mm,paperheight=290mm,left=25mm,right=25mm,top=25mm, bottom=20mm,showcrop]{geometry}
+
+% \PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\makeatletter
+\g@addto@macro\UrlBreaks{%
+  \do0\do1\do2\do3\do4\do5\do6\do7\do8\do9%
+  \do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M
+  \do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X\do\Y\do\Z
+  \do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k\do\l\do\m
+  \do\n\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w\do\x\do\y\do\z
+}
+\Urlmuskip=0mu plus 0.1mu
+\makeatother
+% \urlstyle{rm}
+\urlstyle{same}
+% 替换\url为支持cjk的衬线字体
+% \newfontfamily\urlfontcjk{Noto Serif CJK SC}%用于支持url的字体（待删）
+% \def\UrlFont{\urlfontcjk}
+
+
+\usepackage{footmisc}
+
+\usepackage{metalogo}
+\usepackage{cprotect}
+\usepackage{hyperref}
+\hypersetup{
+    CJKbookmarks,
+    breaklinks,
+}
+
+\begin{document}
+
+\title{ \Huge \LaTeX 字体测试\\ \vspace*{0.5em}
+\large 本次使用
+\ifLuaTeX
+\LuaLaTeX 
+\fi
+\ifXeTeX
+\XeLaTeX 
+\fi
+编译}
+\author{moonhikari}
+\date{2024/8/30}
+\maketitle
+
+\tableofcontents \newpage
+
+\input{data/testfonts.tex}\newpage
+\input{data/testunicode.tex}\newpage
+\input{data/testurl.tex}
+
+\end{document}

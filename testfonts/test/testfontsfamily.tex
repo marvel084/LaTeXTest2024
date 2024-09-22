@@ -1,0 +1,160 @@
+\documentclass{article}
+\usepackage{iftex}
+% \documentclass{ctexart}
+\usepackage{fontspec,xunicode-addon}
+\usepackage[paperwidth=210mm,paperheight=290mm,left=25mm,right=25mm,top=25mm, bottom=20mm,showcrop]{geometry}
+
+% \setmainfont{Source Han Serif SC}
+% \newfontfamily\EnclosedNumbers{Source Han Serif SC}
+\newfontfamily\EnclosedNumbers{Noto Serif CJK SC}
+% \setmainfont{TH-Times}
+\setmainfont{texgyretermes}[ %仿TimesNewRoman字体
+  Extension      = .otf,
+  UprightFont    = *-regular,
+  BoldFont       = *-bold,
+  ItalicFont     = *-italic,
+  BoldItalicFont = *-bolditalic,
+]%
+\setsansfont{texgyreheros}[
+  Extension      = .otf,
+  UprightFont    = *-regular,
+  BoldFont       = *-bold,
+  ItalicFont     = *-italic,
+  BoldItalicFont = *-bolditalic,
+]%
+\setmonofont{texgyrecursor}[
+  Extension      = .otf,
+  UprightFont    = *-regular,
+  BoldFont       = *-bold,
+  ItalicFont     = *-italic,
+  BoldItalicFont = *-bolditalic,
+  Scale          = MatchLowercase,
+  Ligatures      = CommonOff,
+]%
+% \newfontfamily\fb{TH-Times}
+\usepackage[UTF8,heading=true,zihao=-4,fontset=ubuntu]{ctex}
+\let\kaiti=\kaishu
+% ----------------------------- ctexart下的章节标题格式配置 ---------------------------- %
+% https://zhuanlan.zhihu.com/p/464244924
+% \ctexset{
+%       % 修改 section。
+%       section={   
+%           name={,、},
+%           number={\chinese{section}},
+%           format=\heiti\raggedright\zihao{-4}, % 设置 section 标题为黑体、右对齐、小4号字
+%           aftername=\hspace{0pt},
+%           beforeskip=1ex,
+%           afterskip=1ex
+%       },
+%       % 修改 subsection。
+%       subsection={   
+%           name={,、},
+%           % number={\arabic{subsection}},
+%           format=\heiti\zihao{5}, % 设置 subsection 标题为黑体、5号字
+%           aftername=\hspace{0pt},
+%           beforeskip=1ex,
+%           afterskip=1ex
+%       }
+% }
+% ---------------------------------------------------------------------------- %
+\ctexset{
+  section = {
+    name   = {第,章},
+    number = {\chinese{section}},
+    beforeskip=1ex,
+    afterskip=1ex,
+  }
+}%
+% ---------------------------------------------------------------------------- %
+\setCJKmainfont[
+    BoldFont={Noto Sans CJK SC},
+    ItalicFont={AR PL KaitiM GB}
+    ]{Noto Serif CJK SC}
+
+% ----------------------------- 重定义\songti \heiti ---------------------------- %
+\setCJKfamilyfont{zhsong}{Source Han Serif SC}
+[
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Regular,
+    BoldItalicFont = *-Bold
+]
+\setCJKfamilyfont{zhhei}{Noto Sans CJK SC}
+[
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Regular,
+    BoldItalicFont = *-Bold
+]
+% ---------------------------------------------------------------------------- %
+
+\usepackage{titleref}
+%标题格式设置
+\usepackage{titlesec}
+
+%\titlespacing*{hcommandi}{hlefti}{hbefore-sepi}{hafter-sepi}[hright-sepi]
+\titlespacing*{\section}{0pt}{\baselineskip}{0.5\baselineskip}
+\titlespacing*{\subsection}{0pt}{0.5\baselineskip}{0.5\baselineskip}
+\titlespacing*{\subsubsection}{0pt}{0.5\baselineskip}{0pt}
+\titlespacing{\paragraph}{2em}{0.5\baselineskip}{1em}
+%这里利用titleformat*简单做设置，也可以利用titleformat做详细设置
+% \titleformat*{\section}{\zihao{-3}\bfseries\heiti}
+% \titleformat*{\subsection}{\zihao{4}\bfseries\heiti}
+\titleformat*{\subsubsection}{\zihao{-4}\bfseries\kaiti}
+
+\renewcommand{\contentsname}{\zihao{4}目~~录}
+%%删除线
+\ifLuaTeX
+  \usepackage{luacolor}
+  \usepackage[soul]{lua-ul} %eisvogel模板所采用，配合markdown删除线
+  \newcommand*{\sout}[1]{\st{#1}}
+  % \usepackage{soul}
+  % \usepackage{ulem} %不支持中文
+\fi
+\ifXeTeX
+  \usepackage{xeCJKfntef}
+  % \renewcommand{\st}[1]{\sout{#1}}
+\fi
+
+\begin{document}
+
+\title{ \Huge \heiti 字体集测试}
+\author{moonhikari}
+\date{2024/9/6}
+\maketitle
+
+\tableofcontents
+
+\section{字体集 Fontset}
+
+\subsection{小标题}
+
+\subsubsection{小小标题}
+
+自动字体：正常 \textbf{粗体} \textit{意大利斜体}  \textsl{倾斜体} 
+
+Pandoc转义字体：\textbf{粗体} \emph{斜体}，
+
+删除线\sout{删除}
+
+单独字体：{\heiti 黑体}，{\kaiti 楷体}
+
+English Text, \textbf{Bold English Text}, \textit{Italic English Text}
+
+\subsection{汉化 Chinesed}
+
+\begin{table}[htbp]
+  \caption{Test Phagspa positional variants}
+  \centering
+  \begin{tabular}{r|cccc}
+      \hline
+       & Isolate & Initial & Medial & Final\\
+       \hline
+      mainfont & 123 & 123 & 123 & 123\\
+      \hline
+  \end{tabular}
+  
+  \label{tab:my_label}
+\end{table}
+
+\end{document}

@@ -1,0 +1,51 @@
+\documentclass{article}
+\usepackage{fontspec,xunicode-addon}
+% \setmainfont{Source Han Serif SC}
+% \newfontfamily\EnclosedNumbers{Source Han Serif SC}
+\newfontfamily\EnclosedNumbers{Noto Serif CJK SC}
+% \setmainfont{TH-Times}
+\setmainfont{texgyretermes}[ %仿TimesNewRoman字体
+  Extension      = .otf,
+  UprightFont    = *-regular,
+  BoldFont       = *-bold,
+  ItalicFont     = *-italic,
+  BoldItalicFont = *-bolditalic,
+]%
+% \newfontfamily\fb{TH-Times}
+\usepackage{ctex}
+\ltjdefcharrange{6}{%
+  "24EA, "2460-"2473, "3251-"32BF,
+  "24FF, "2776-"277F, "24EB-"24F4}
+\setCJKmainfont{Noto Serif CJK SC}
+% \setCJKmainfont{Source Han Serif SC}
+% \ExplSyntaxOn
+% \cs_set:Npn \TESTi
+%   {
+%     \int_step_inline:nnn {  0 } { 25 } { \begingroup\EnclosedNumbers\textcircled{##1}\endgroup ~ } \par
+%     \int_step_inline:nnn { 26 } { 50 } { \textcircled{##1} ~ } \par
+%   }
+% \cs_set:Npn \TESTii
+%   { \tl_map_inline:nn { abcdefghijklmnopqrstuvwxyz } { \textcircled{##1} ~ } \par }
+% \cs_set:Npn \TESTiii
+%   { \tl_map_inline:nn { ABCDEFGHIJKLMNOPQRSTUVWXYZ } { \textcircled{##1} ~ } \par }
+% \ExplSyntaxOff
+\AtBeginUTFCommand[\textcircled]{\begingroup\EnclosedNumbers}
+\AtEndUTFCommand[\textcircled]{\endgroup}
+
+\begin{document}
+\textcircled{1}
+\textcircled{25}
+\textcircled{a}
+\textcircled{Z}
+
+Unicode：
+⓪ ① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩ ⑪	⑫ ⑬	⑭ ⑮	⑯ ⑰ ⑱ ⑲	⑳ ㉑ ㉒	㉓	㉔	㉕	㉖	㉗	㉘	㉙	㉚ ㉛	㉜	㉝	㉞	㉟	㊱	㊲	㊳	㊴	㊵ ㊶ ㊷ ㊸	㊹	㊺	㊻	㊼	㊽	㊾	㊿ 
+
+\verb|\textcirciled{}|：
+\textcircled{5} \textcircled{10} \textcircled{19} \textcircled{20} \textcircled{25} , \textcircled{56} \textcircled{87}  \textcircled{190}
+
+% \TESTi
+% \textcircled{Z}
+% \TESTii
+% \TESTiii
+\end{document}

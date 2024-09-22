@@ -1,0 +1,54 @@
+% !Mode:: "TeX:UTF-8"
+% !TEX root = ../main.tex
+
+\section{URLtest}
+
+% 你好，http://
+% \url{http://nihao/你好}
+
+% \href{http://nihao/你好}{\UrlFont http://nihao/你好}
+
+% 纯URL， \url{http://nihao/nbvhsbvfhewbfewghdyuwehcygdctygbjnmwihjcuijknjhugbcujhnyugvhbcjbnhcbhcjejhcygbcb}
+
+% 纯URL含中文， 
+%     \url{http://nihao/你好你好你好你好你好你好ijknjhugbcujhnyugvhbghurejghyughfuhngvuhvuhnujvfvfdvdfvdfvfdnbtbfvdfvdfvdfvdhnuihunjhjhbyuhbjn你好你好你好你好好你好你好你好你好好你好你好你好你好好你好你好你好你好好你好你好你好你好cjbnhcbhcjejhcy$gbcb}
+
+
+% href， \href{http://123}{\UrlFont http://nihao/nbvhsbvfhewbfewghdyuwehcygdctygbjnmwihjcuijknjhugbcujhnyugvhbcjbnhcbhcjejhcygbcb}
+
+% href加seqsplit， \href{http://123}{\UrlFont\seqsplit{http://nihao/nbvhsbvfhewbfewghdyuwehcygdctygbjnmwihjcuijknjhugbcujhnyugvhbcjbnhcbhcjejhcygbcb}}
+
+% href含中文， \href{http://123}{\UrlFont http://nihao/你好你好你好你好你好你好ijknjhugbcujhnyugvhbghurejghyughfuhngvuhvuhnujvfvfdvdfvdfvfdnbtbfvdfvdfvdfvdhnuihunjhjhbyuhbjn你好你好你好你好好你好你好你好你好好你好你好你好你好好你好你好你好你好好你好你好你好你好cjbnhcbhcjejhcygbcb}
+
+% href加seqsplit含中文， \href{http://123}{\UrlFont \seqsplit{http://nihao/你好你好你好你好你好你好ijknjhugbcujhnyugvhbghurejghyughfuhngvuhvuhnujvfvfdvdfvdfvfdnbtbfvdfvdfvdfvdhnuihunjhjhbyuhbjn你好你好你好你好好你好你好你好你好好你好你好你好你好好你好你好你好你好好你好你好你好你好cjbnhcbhcjejhcygbcb}}
+
+% \url{https://iiif.lib.harvard.edu/manifests/view/drs:482&07411$620i}
+
+% \href{https://iiif.lib.harvard.edu/manifests/view/drs:48207411$620i}{\seqsplit{https://iiif.lib.harvard.edu/manifests/view/drs:48207411\$620i}}
+
+% \href{https://iiif.lib.harvard.edu/mani啦啦fests/view/drs:48207411$620i}{https://iiif.lib.har啦啦vard.edu/manifests/view/drs:482074\&11\$620i}
+
+% \verb|Special characters: { } $ & # % _ ~ ^ \ |
+
+% \nolinkurl{https://ja.wikipedia.org/wiki/学習指導要領#2020年（平成32年）_-}
+
+
+
+% \cprotect{\href{http://www.numpy.org}}{\verb|http://nihao/你好你好你好你好你好你好ijknjhugbcujhny/ugvhbghurejghyughfuhngvuhvuhnujvf/vfdvdfvdfvfdnbtbfvdfvdfvdfvdhnuihunjhjhbyuhbjn你好你好你好你好好你好你好你好你好好你好你好你好你好好你好你好你好你好好你好你好你好你好cjbnhcbhcjejhcygbcbm#py|}
+
+\ifLuaTeX
+\LuaLaTeX 
+\fi
+\ifXeTeX
+\XeLaTeX 
+\fi
+
+% \url{https://ctext.org/wiki.pl?if=gb&chapter=552474&remap=gb#纪载宝坻县记}
+
+% \url{https://ctext.org/wiki.pl?if=gb&chapter=552474&remap=gb#%E7%BA%AA%E8%BD%BD%E5%AE%9D%E5%9D%BB%E5%8E%BF%E8%AE%B0} % #%&可以直接输入
+
+\verb|\url|：\url{https://ctext.org/wiki.pl?if=gb&chapter=552474&remap=gb#纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttetesttesttestteststtesttest}
+
+\verb|\href|\footnote{Invalid characters escaped}：\href{https://ctext.org/wiki.pl?if=gb&chapter=552474&remap=gb#纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttetesttesttestteststtesttest}{https://ctext.org/wiki.pl?if=g\&chapter=552474\&remap=gb\#纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttetesttesttestteststtesttest}
+
+\verb|\href| with \verb|seqsplit|\footnote{Invalid characters escaped}：\href{https://ctext.org/wiki.pl?if=gb&chapter=552474&remap=gb#纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttetesttesttestteststtesttest}{\seqsplit{https://ctext.org/wiki.pl?if=g\&chapter=552474\&remap=gb\#纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记纪载宝坻县记testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttetesttesttestteststtesttest}}
