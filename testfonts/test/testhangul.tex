@@ -31,6 +31,19 @@
 \ifXeTeX
 \newCJKfontfamily\oldjamo{Noto Serif CJK KR}[Script=Hangul] %旧谚文
 % XeTeX会清空所有空格，所以韩语段的空格无效
+
+%%临时测试汉字不同locale字体
+\newCJKfontfamily\serifcjkkr{Noto Serif CJK KR}
+\newCJKfontfamily\serifcjksc{Noto Serif CJK SC}
+\newCJKfontfamily\serifcjktc{Noto Serif CJK TC}
+\newCJKfontfamily\serifcjkhk{Noto Serif CJK HK}
+\newCJKfontfamily\serifcjkjp{Noto Serif CJK JP}
+
+\newCJKfontfamily\sanscjkkr[Path=../fonts/]{NotoSansCJKkr-Regular.otf}
+\newCJKfontfamily\sanscjksc[Path=../fonts/]{NotoSansCJKsc-Regular.otf}
+\newCJKfontfamily\sanscjktc[Path=../fonts/]{NotoSansCJKtc-Regular.otf}
+\newCJKfontfamily\sanscjkhk[Path=../fonts/]{NotoSansCJKhk-Regular.otf}
+\newCJKfontfamily\sanscjkjp[Path=../fonts/]{NotoSansCJKjp-Regular.otf}
 \fi
 % ------------------------- 2. LuaTeX用CJK字体配luatexko ------------------------- %
 \iffalse 
@@ -203,4 +216,18 @@ F32	ᄎᆑᆯ	ᄎᆑᇙ	ᄎᆑᆷ	ᄎᆒ	ᄎᆒᆼ	ᄎᆔ	ᄎᆔᆫ	ᄎᆔᆯ	�
     m@/c@m;nai: jei bdv;dvr; si/re; pye/di; mod:h@rx no;mi; ha/ni;ra
   \end{jamotext}
 \end{korean}
+
+\subsubsection*{汉字locale}
+KR {\serifcjkkr 歡迎 欢迎} {\sanscjkkr 歡迎 欢迎} 
+  \begin{korean}
+    \begin{jamotext}
+      hoan/ qyef
+    \end{jamotext}
+  \end{korean}\newline
+SC {\serifcjksc 歡迎 欢迎} {\sanscjksc 歡迎 欢迎}\newline
+TC {\serifcjktc 歡迎 欢迎} {\sanscjktc 歡迎 欢迎}\newline
+HK {\serifcjkhk 歡迎 欢迎} {\sanscjkhk 歡迎 欢迎}\newline
+JP {\serifcjkjp 歡迎 欢迎} {\sanscjkjp 歡迎 欢迎}\newline
+
+
 \end{document}
